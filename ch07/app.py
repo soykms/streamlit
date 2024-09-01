@@ -1,41 +1,25 @@
 # -*- coding:utf-8 -*-
 
-import sktime 
-import pmdarima
-import pandas as pd 
-import matplotlib
-import seaborn
-import plotly
-import sklearn
-import streamlit
-import yfinance
-import lightgbm
-import prophet
-import statsmodels
-import geopandas
-import folium
-import xmltodict
-import millify
-import pingouin
+import streamlit as st
+from streamlit_option_menu import option_menu
+from home import run_home
+from utils import load_data
+from eda.eda_home import run_eda
+from ml.ml_home import run_ml
 
 def main():
-    print(sktime.__version__)
-    print(pmdarima.__version__)
-    print(pd.__version__)
-    print(matplotlib.__version__)
-    print(seaborn.__version__)
-    print(plotly.__version__)
-    print(sklearn.__version__)
-    print(streamlit.__version__)
-    print(yfinance.__version__)
-    print(lightgbm.__version__)
-    print(prophet.__version__)
-    print(statsmodels.__version__)
-    print(geopandas.__version__)
-    print(folium.__version__)
-    print(xmltodict.__version__)
-    print(millify.__version__)
-    print(pingouin.__version__)
-
+    total_df = load_data()
+    with st.sidebar:
+        selected = option_menu("대시보드 메뉴", ['홈', '탐색적 자료분석', '부동산 예측'], 
+                               icons=['house', 'file-bar-graph', 'graph-up-arrow'], menu_icon="cast", default_index=0)
+    if selected == "홈":
+        run_home()
+    elif selected == "탐색적 자료분석":
+        run_eda(total_df)
+    elif selected == "부동산 예측":
+        run_ml(total_df)
+    else:
+        print("error..")
+        
 if __name__ == "__main__":
     main()
